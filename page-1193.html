@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>מדריך למשתמש</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 12px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
+            color: #4c1d95;
+            text-align: center;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            font-size: 22px;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .guide-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s;
+        }
+
+        .guide-card:active {
+            transform: scale(0.98);
+        }
+
+        .guide-title {
+            color: #2d3748;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .guide-content {
+            color: #4a5568;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .guide-content a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            border-bottom: 1px solid #667eea;
+            transition: all 0.2s;
+        }
+
+        .guide-content a:active {
+            color: #764ba2;
+            border-bottom-color: #764ba2;
+        }
+
+        .divider {
+            text-align: center;
+            color: #cbd5e0;
+            font-size: 18px;
+            margin: 8px 0;
+            letter-spacing: 2px;
+        }
+
+        /* אופטימיזציה למסכים קטנים */
+        @media screen and (max-width: 350px) {
+            body {
+                padding: 8px;
+            }
+
+            .page-title {
+                font-size: 18px;
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+
+            .guide-card {
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+
+            .guide-title {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .guide-content {
+                font-size: 13px;
+            }
+
+            .notice {
+                padding: 10px;
+                font-size: 12px;
+            }
+        }
+
+        @media screen and (max-width: 280px) {
+            .page-title {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .guide-title {
+                font-size: 13px;
+            }
+
+            .guide-content {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">מדריך למשתמש</h1>
+
+        <div class="divider">••••</div>
+
+        <div class="guide-card">
+            <h2 class="guide-title">לא מציג שם בשיחה נכנסת</h2>
+            <div class="guide-content">
+                <p>אם אנשי הקשר שלך רשומים עם קידומת 972, המכשיר לא יזהה את השם בשיחות נכנסות.</p>
+                <p style="margin-top: 10px;"><strong>פתרון:</strong> הורד את <a href="https://showhaim.github.io/showstore/Contacs.apk">האפליקציה הזו</a> שתמחק את הקידומת מכל אנשי הקשר.</p>
+            </div>
+        </div>
+
+        <div class="divider">••••</div>
+
+        <div class="guide-card">
+            <h2 class="guide-title">העברת קבצים דרך המחשב</h2>
+            <div class="guide-content">
+                <p>כדי להעביר קבצים בין המכשיר למחשב:</p>
+                <ol style="margin-right: 18px; margin-top: 8px;">
+                    <li>חבר את המכשיר למחשב</li>
+                    <li>הורד את וילון ההתראות</li>
+                    <li>לחץ על "טעינת התקן באמצעות USB"</li>
+                    <li>בחר באפשרות "העברת קבצים"</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="divider">••••</div>
+
+        <div class="guide-card">
+            <h2 class="guide-title">החלפת מקלדת</h2>
+            <div class="guide-content">
+                <p>למעבר בין מקלדת טאצ' למקלדת מקשים:</p>
+                <ol style="margin-right: 18px; margin-top: 8px;">
+                    <li>בזמן ההקלדה, הורד את וילון ההתראות</li>
+                    <li>לחץ על "בחירת שיטת קלט"</li>
+                    <li>בחר את סוג המקלדת הרצוי</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="divider">••••</div>
+
+        <div class="guide-card">
+            <h2 class="guide-title">פתיחת יישומים אחרונים</h2>
+            <div class="guide-content">
+                <p>כדי לראות את היישומים שפתחת לאחרונה:</p>
+                <p style="margin-top: 8px;"><strong>לחץ לחיצה ארוכה על מקש כוכבית (*)</strong></p>
+                <p style="margin-top: 8px; font-size: 13px; color: #718096;">המקש נמצא בחלק התחתון של המקלדת, משמאל למקש האפס.</p>
+            </div>
+        </div>
+
+        <div class="divider">••••</div>
+    </div>
+</body>
+</html>

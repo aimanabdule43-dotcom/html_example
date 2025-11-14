@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>חנות אפליקציות</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            padding: 8px 8px 20px 8px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 18px;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 6px;
+            align-items: stretch;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.2s;
+            min-width: 0;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-button {
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .search-button:active {
+            transform: scale(0.95);
+        }
+
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 0;
+        }
+
+        .app-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-item:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .app-icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            margin-bottom: 8px;
+        }
+
+        .app-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+        }
+
+        .app-name {
+            font-size: 11px;
+            color: #2d3748;
+            text-align: center;
+            font-weight: 500;
+            line-height: 1.3;
+            word-wrap: break-word;
+            max-width: 100%;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(45, 55, 72, 0.95);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .message.show {
+            opacity: 1;
+        }
+
+        /* אופטימיזציה למסכים קטנים במיוחד */
+        @media screen and (max-width: 350px) {
+            body {
+                padding: 6px 6px 15px 6px;
+            }
+
+            .header {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            .header h1 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .search-input {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            .search-button {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .apps-grid {
+                gap: 8px;
+            }
+
+            .app-item {
+                padding: 10px 6px;
+                border-radius: 14px;
+            }
+
+            .app-icon-wrapper {
+                width: 48px;
+                height: 48px;
+                border-radius: 12px;
+                margin-bottom: 6px;
+            }
+
+            .app-icon {
+                border-radius: 12px;
+            }
+
+            .app-name {
+                font-size: 10px;
+            }
+        }
+
+        /* למסכים ממש זעירים */
+        @media screen and (max-width: 280px) {
+            .apps-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .app-icon-wrapper {
+                width: 52px;
+                height: 52px;
+            }
+
+            .app-name {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>חנות אפליקציות</h1>
+        <div class="search-container">
+            <input 
+                id="searchInput" 
+                class="search-input"
+                type="text" 
+                placeholder="חפש שם אפליקציה..."
+            />
+            <button 
+                id="searchButton"
+                class="search-button"
+                onclick="searchApps()">
+                חפש
+            </button>
+        </div>
+    </div>
+
+    <div class="apps-grid" id="appsGrid">
+        <a href="https://ld8584950.github.io/application/bank-mercantile.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/bank-mercantile.png" alt="בנק מרכנתיל">
+            </div>
+            <div class="app-name">בנק מרכנתיל</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Yahav-bank.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Yahav-bank.png" alt="בנק יהב">
+            </div>
+            <div class="app-name">בנק יהב</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/bank-discount.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/bank-discount.png" alt="בנק דיסקונט">
+            </div>
+            <div class="app-name">בנק דיסקונט</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/bankdoar.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/bankdoar.png" alt="בנק הדואר">
+            </div>
+            <div class="app-name">בנק הדואר</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/bank-hapoalim.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/bank-hapoalim.png" alt="בנק הפועלים">
+            </div>
+            <div class="app-name">בנק הפועלים</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/bankmassad.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/bankmassad.png" alt="בנק מסד">
+            </div>
+            <div class="app-name">בנק מסד</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/mizrahi-tefahot.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/mizrahi-tefahot.png" alt="בנק מזרחי">
+            </div>
+            <div class="app-name">בנק מזרחי</div>
+        </a>
+
+        <a href="https://onedrive.live.com/download?cid=A50ECA20D011DDA4&resid=A50ECA20D011DDA4%21164&authkey=AEspohQt3kq9pHE" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/pagi-Bank.png" alt="בנק פאגי">
+            </div>
+            <div class="app-name">בנק פאגי</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/pepper.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/pepper.png" alt="Pepper">
+            </div>
+            <div class="app-name">Pepper - פפפר</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/cal.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/cal.png" alt="Cal">
+            </div>
+            <div class="app-name">Cal - כאל</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Isracard.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Isracard.png" alt="ישראכרט">
+            </div>
+            <div class="app-name">ישראכרט</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/leumi.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/leumi.png" alt="בנק לאומי">
+            </div>
+            <div class="app-name">בנק לאומי</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/PayPal.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/PayPal.png" alt="PayPal">
+            </div>
+            <div class="app-name">PayPal</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/translate.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/translate.png" alt="גוגל תרגום">
+            </div>
+            <div class="app-name">גוגל תרגום</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/keep.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/keep.png" alt="גוגל הערות">
+            </div>
+            <div class="app-name">גוגל הערות</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/gmail.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/gmail.png" alt="גוגל ג'ימייל">
+            </div>
+            <div class="app-name">גוגל ג'ימייל</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/tehilim1.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/tehilim1.png" alt="תהילים">
+            </div>
+            <div class="app-name">תהילים</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/sefaria.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/sefaria.jpg" alt="Sefaria">
+            </div>
+            <div class="app-name">Sefaria</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/kolHalashon.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/kolHalashon.png" alt="קול הלשון">
+            </div>
+            <div class="app-name">קול הלשון</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/hidabroot.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/hidabroot.png" alt="הידברות">
+            </div>
+            <div class="app-name">הידברות</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Blessings-nodded.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Blessings-nodded.png" alt="ברכות הנהנין">
+            </div>
+            <div class="app-name">ברכות הנהנין</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/clalit.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/clalit.png" alt="כללית">
+            </div>
+            <div class="app-name">כללית</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/leumit.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/leumit.png" alt="לאומית">
+            </div>
+            <div class="app-name">לאומית</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/maccabi.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/maccabi.png" alt="מכבי">
+            </div>
+            <div class="app-name">מכבי</div>
+        </a>
+
+        <a href="https://onedrive.live.com/download?cid=A50ECA20D011DDA4&resid=A50ECA20D011DDA4%21165&authkey=AMKJpmEssuO_6X4" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/meuhedet.png" alt="מאוחדת">
+            </div>
+            <div class="app-name">מאוחדת</div>
+        </a>
+
+        <a href="https://www.whatsapp.com/android/0/WhatsApp.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/whatsapp.png" alt="וואטסאפ">
+            </div>
+            <div class="app-name">וואטסאפ</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/WhatsApp-Business.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/WhatsApp-Business.png" alt="וואטסאפ עסקי">
+            </div>
+            <div class="app-name">וואטסאפ עסקי</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/delete-bro.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/delete-bro.png" alt="תמחק אחי">
+            </div>
+            <div class="app-name">תמחק אחי</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Textra.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Textra.png" alt="Textra">
+            </div>
+            <div class="app-name">Textra</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/movit.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/movit.png" alt="MOVIT">
+            </div>
+            <div class="app-name">MOVIT-מוביט</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Bus-close.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Bus-close.png" alt="אוטובוס קרוב">
+            </div>
+            <div class="app-name">אוטובוס קרוב</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Multi-strip-hopon.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Multi-strip-hopon.png" alt="הופ און">
+            </div>
+            <div class="app-name">הופ און</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/pango.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/pango.png" alt="PANGO">
+            </div>
+            <div class="app-name">PANGO - פנגו</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/waze.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/waze.png" alt="Waze">
+            </div>
+            <div class="app-name">וויז - Waze</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/tehory.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/theory.png" alt="תאוריה">
+            </div>
+            <div class="app-name">תאוריה</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/weather.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/weather.jpg" alt="מזג אוויר">
+            </div>
+            <div class="app-name">מזג אוויר</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/kol-barama.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/kol-barama.png" alt="קול ברמה">
+            </div>
+            <div class="app-name">קול ברמה</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/kol-hai.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/kol-hai.png" alt="קול חי">
+            </div>
+            <div class="app-name">קול חי</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Toker.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Toker.jpg" alt="טוקר">
+            </div>
+            <div class="app-name">טוקר</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/AdGuard.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/AdGuard.png" alt="AdGuard">
+            </div>
+            <div class="app-name">AdGuard</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/FileManager%2B.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/FileManager+.png" alt="סייר קבצים">
+            </div>
+            <div class="app-name">סייר קבצים</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/nova.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/nova.png" alt="לאונצר NOVA">
+            </div>
+            <div class="app-name">לאונצר NOVA</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/pdf.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/pdf.png" alt="קורא PDF">
+            </div>
+            <div class="app-name">קורא PDF</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/zip.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/zip.png" alt="מחלץ קבצים">
+            </div>
+            <div class="app-name">מחלץ קבצים</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/blu-mail.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/blu-mail.png" alt="בלו מייל">
+            </div>
+            <div class="app-name">בלו מייל</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/doarIsrael.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/doarIsrael.png" alt="דואר ישראל">
+            </div>
+            <div class="app-name">דואר ישראל</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Prepares-ringtones.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Prepares-ringtones.png" alt="חותך שירים">
+            </div>
+            <div class="app-name">חותך שירים</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Pulsar.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Pulsar.png" alt="נגן Pulsar">
+            </div>
+            <div class="app-name">נגן Pulsar</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Sai.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/SAI.png" alt="מתקין APKS">
+            </div>
+            <div class="app-name">מתקין APKS</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/Suduko.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/Sudoku.png" alt="סודוקו">
+            </div>
+            <div class="app-name">סודוקו</div>
+        </a>
+
+        <a href="https://ld8584950.github.io/application/SURE.apk" class="app-item">
+            <div class="app-icon-wrapper">
+                <img class="app-icon" src="./update/picture/SURE.png" alt="שלט SURE">
+            </div>
+            <div class="app-name">שלט SURE</div>
+        </a>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <script>
+        let isSearchMode = false;
+        
+        function searchApps() {
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const apps = document.querySelectorAll('.app-item');
+            
+            if (isSearchMode) {
+                location.reload();
+                return;
+            }
+            
+            if (!searchTerm) {
+                showMessage('אנא הכנס טקסט לחיפוש');
+                return;
+            }
+            
+            let found = false;
+            apps.forEach(app => {
+                const appName = app.querySelector('.app-name');
+                if (appName && appName.textContent.trim().toLowerCase().includes(searchTerm)) {
+                    app.style.display = 'flex';
+                    found = true;
+                } else {
+                    app.style.display = 'none';
+                }
+            });
+            
+            if (!found) {
+                showMessage('לא נמצאו תוצאות');
+            }
+            
+            searchButton.textContent = 'הצג הכל';
+            isSearchMode = true;
+        }
+
+        function showMessage(text) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.classList.add('show');
+            
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 2500);
+        }
+
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchApps();
+            }
+        });
+    </script>
+</body>
+</html>
